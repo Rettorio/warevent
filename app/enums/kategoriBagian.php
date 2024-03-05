@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum kategoriBagian: int
+enum KategoriBagian: int
 {
     case TataUsaha = 1;
     case Kepegawaian = 2;
