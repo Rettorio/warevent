@@ -70,8 +70,21 @@ class BarangController extends Controller
         return response()->json(["message" => "Berhasil menambahkan barang.", "data" => $barang], 201);
     }
 
-    public function filter(string $kategori)
+    public function filter(Request $request)
     {
+        $filteredBarang = Barang::withBaseRelation();
+        if ($request->exists("kategori")) {
+            $filteredBarang = $filteredBarang->where("kategori_id", "=", $request->kategori);
+        }
+        if ($request->exists("bagian")) {
+            $filteredBarang = $filteredBarang->where("padaBagian", "=", $request->bagian);
+        }
+        if ($request->exists("pegawai")) {
+            $filteredBarang = $filteredBarang->where("padaPegawai", "=", $request->pegawai);
+        }
+
+        $filter = $request->only(["kategori", "bagian", "pegawai"]);
+        return response()->json(["message" => "berhasil memfilter barang", "filter" => $filter, "data" => $filteredBarang->get()]);
     }
 
     public function show($id)
@@ -102,8 +115,13 @@ class BarangController extends Controller
         return response()->json(["message" => "berhasil update barang.", "barang" => $barang]);
     }
 
-    public function destroy(Barang $barang)
+    public function destroy($id)
     {
+        if ($barang = Barang::find($id)) {
+            $barang->delete();
+            return response()->json(["message" => "Berhasil menghapus barang."], 202);
+        }
+        return response()->json(["message" => "Barang tidak ditemukan."], 404);
     }
     //
 }

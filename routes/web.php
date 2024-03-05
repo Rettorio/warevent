@@ -31,10 +31,10 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post("/barang/create", "BarangController@create");
     $router->get("/barang", "BarangController@index");
     $router->get("/barang/test", "BarangController@test");
-    $router->get("/barang/filter/{kategori}", "BarangController@filter");
-    $router->get("/barang/{id}", "BarangController@show");
+    $router->get("/barang/filter", "BarangController@filter");
+    $router->get("/barang/{id}", "  BarangController@show");
     $router->post("/barang/update/{id}", "BarangController@update");
-    $router->delete("/barang/destroy/{barang}", "BarangController@destroy");
+    $router->get("/barang/destroy/{id}", "BarangController@destroy");
 });
 
 // $router->get('/{any:.*}', function () use ($router) {
