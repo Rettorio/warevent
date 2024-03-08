@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class BarangController extends Controller
@@ -32,9 +33,9 @@ class BarangController extends Controller
 
     public function index()
     {
-        $list = Barang::withBaseRelation()->get();
-        $message = "List barang berhasil diambil.";
-        return response()->json(compact('message', 'list'));
+        $response = Barang::withBaseRelation()->paginate(50);
+        $response['message'] = "List barang berhasil diambil.";
+        return response()->json($response);
     }
 
     public function create(Request $request)
