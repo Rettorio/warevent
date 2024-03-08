@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class KatBarang extends Model
+class KatDokumen extends Model
 {
-    protected $table = "kategori_barang";
+    protected $table = "kategori_dokumen";
+
     protected $fillable = [
-        'kategori',
+        "kategori"
     ];
 
     protected $timestamps = false;
 
-
-    public function barang(): HasMany
+    public function dokumen(): HasMany
     {
-        return $this->hasMany(Barang::class);
+        return $this->hasMany(Dokumen::class);
     }
 }
