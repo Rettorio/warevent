@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class BarangController extends Controller
@@ -31,10 +29,15 @@ class BarangController extends Controller
         return response()->json(["message" => "Barang", "data" => $barang]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $response = Barang::withBaseRelation()->paginate(50);
-        $response['message'] = "List barang berhasil diambil.";
+        $port = [
+            "sm" => 25,
+            "md" => 50,
+            "xl" => 100
+        ];
+        $viewPort = $request->exists("content") && array_key_exists($request->content, $port) ? $port[$request->content] : $port['md'];
+        $response = Barang::withBaseRelation()->paginate($viewPort);
         return response()->json($response);
     }
 

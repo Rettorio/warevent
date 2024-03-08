@@ -31,6 +31,9 @@ class Barang extends Model
         "padaPegawai",
         "inputDari",
         "kategori_id",
+        "created_at",
+        "updated_at",
+        "deleted_at",
     ];
 
     protected $appends = [
@@ -61,7 +64,7 @@ class Barang extends Model
         ];
     }
 
-    static public function withBaseRelation(): Builder
+    public static function withBaseRelation(): Builder
     {
         return Barang::with(["kategori" => function ($query) {
             $query->select("id", "kategori as nama");
