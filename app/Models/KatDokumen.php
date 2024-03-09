@@ -13,7 +13,7 @@ class KatDokumen extends Model
         "kategori"
     ];
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
     public function dokumen(): HasMany
     {

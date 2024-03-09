@@ -35,6 +35,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get("/barang/{id}", "  BarangController@show");
     $router->post("/barang/update/{id}", "BarangController@update");
     $router->get("/barang/destroy/{id}", "BarangController@destroy");
+
+
+    //dokumen
+    $router->get("/docs", "DokumenController@index");
+    $router->post("/docs/create", "DokumenController@create");
 });
 
 // $router->get('/{any:.*}', function () use ($router) {

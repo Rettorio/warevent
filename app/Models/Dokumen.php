@@ -28,7 +28,7 @@ class Dokumen extends Model
         "judul" => ["required", "string"],
         "tanggalPembuatan" => ["required", "date"],
         "no_seri" => ["alpha_num:ascii"],
-        "lokasi_file" => ["required", File::types("pdf")->max(3 * 1024)],
+        "pdf" => ["required", 'mimes:pdf', 'max:3072'],
         "kategori_id" => ["required", "exists:kategori_dokumen,id"]
     ];
 
@@ -36,7 +36,7 @@ class Dokumen extends Model
         "judul" => ["string"],
         "tanggalPembuatan" => ["date"],
         "no_seri" => ["alpha_num:ascii"],
-        "lokasi_file" => [File::types("pdf")->max(3 * 1024)],
+        "pdf" => ['mimes:pdf', 'max:3072'],
         "kategori_id" => ["exists:kategori_dokumen,id"]
     ];
 
