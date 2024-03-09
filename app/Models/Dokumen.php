@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Validation\Rules\File;
 
 class Dokumen extends Model
 {
@@ -18,8 +19,25 @@ class Dokumen extends Model
         "judul",
         "tanggalPembuatan",
         "no_seri",
+        "lokasi_file",
         "input_dari",
         "kategori_id"
+    ];
+
+    public static $createRules = [
+        "judul" => ["required", "string"],
+        "tanggalPembuatan" => ["required", "date"],
+        "no_seri" => ["alpha_num:ascii"],
+        "lokasi_file" => ["required", File::types("pdf")->max(3 * 1024)],
+        "kategori_id" => ["required", "exists:kategori_dokumen,id"]
+    ];
+
+    public static $updateRules = [
+        "judul" => ["string"],
+        "tanggalPembuatan" => ["date"],
+        "no_seri" => ["alpha_num:ascii"],
+        "lokasi_file" => [File::types("pdf")->max(3 * 1024)],
+        "kategori_id" => ["exists:kategori_dokumen,id"]
     ];
 
     protected $hidden = [
@@ -30,6 +48,6 @@ class Dokumen extends Model
 
     public function kategori(): HasOne
     {
-        return $this->hasOne(KatDokumen::class, foreignKey: "kategori_id", localKey: "id");
+        return $this->hasOne(KatDokumen::class, foreignKey: "id", localKey: "kategori_id");
     }
 }
