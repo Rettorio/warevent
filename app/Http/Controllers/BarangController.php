@@ -110,7 +110,7 @@ class BarangController extends Controller
             $fileName = $gambar->getClientOriginalName();
             //if filename exist generate strong randomly name for the file
             if (Storage::disk("public")->exists("barang-assets/" . $fileName)) {
-                $fileName = uniqid() . $gambar->getClientOriginalExtension();
+                $fileName = uniqid() . "." . $gambar->getClientOriginalExtension();
             }
             // Storage::disk("public")->delete($barang->gambar)
             $data['gambar'] = $gambar->storeAs('barang-assets', $fileName, "public");

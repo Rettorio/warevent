@@ -40,6 +40,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     //dokumen
     $router->get("/docs", "DokumenController@index");
     $router->post("/docs/create", "DokumenController@create");
+    $router->post("/docs/update/{id}", "DokumenController@update");
 });
 
 // $router->get('/{any:.*}', function () use ($router) {
