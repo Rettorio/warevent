@@ -39,6 +39,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     //dokumen
     $router->get("/docs", "DokumenController@index");
+    $router->get("/docs/{id}", "DokumenController@show");
     $router->post("/docs/create", "DokumenController@create");
     $router->post("/docs/update/{id}", "DokumenController@update");
 });

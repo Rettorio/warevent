@@ -95,8 +95,17 @@ class DokumenController extends Controller
     {
     }
 
-    public function show()
+    public function show($id)
     {
+        $data = Dokumen::find($id);
+        $message = "Berhasil mengambil dokumen.";
+        $code = 200;
+        if (is_null($data)) {
+            $message = "Dokumen tidak ditemukan.";
+            $code = 404;
+        }
+
+        return response()->json(compact('message', 'data'), $code);
     }
 
     public function delete()
