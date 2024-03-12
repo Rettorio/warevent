@@ -6,9 +6,15 @@ use App\Models\Dokumen;
 use App\Models\KatDokumen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class DokumenController extends Controller
 {
+    private static $port = [
+        "sm" => 25,
+        "md" => 50,
+        "xl" => 100
+    ];
 
     public function __construct()
     {
@@ -17,12 +23,8 @@ class DokumenController extends Controller
 
     public function index(Request $request)
     {
-        $port = [
-            "sm" => 25,
-            "md" => 50,
-            "xl" => 100
-        ];
-        $viewPort = $request->exists("content") && array_key_exists($request->content, $port) ? $port[$request->content] : $port['md'];
+
+        $viewPort = $request->exists("content") && array_key_exists($request->content, self::$port) ? self::$port[$request->content] : self::$port['md'];
         $dokumen = Dokumen::with('kategori')->cursorPaginate($viewPort);
         return response()->json(["message" => "Berhasil mengambil data dokumen.", "data" => $dokumen]);
     }
@@ -91,8 +93,35 @@ class DokumenController extends Controller
         return response()->json(["message" => "berhasil mengupdate dokumen", "data" => $dokumen]);
     }
 
-    public function filter()
+    public function filter(Request $request)
     {
+        $this->validate($request, [
+            "rilisDari" => "date",
+            "rilisHingga" => "date",
+            "content" => Rule::in(array_keys(self::$port)),
+        ]);
+
+        $docs = Dokumen::with('kategori');
+        if ($request->exists('rilisDari') && $request->exists('rilisHingga')) {
+            $docs = $docs->whereBetween("tanggalPembuatan", [$request->rilisDari, $request->rilisHingga]);
+        } else if ($request->exists("rilisDari")) {
+            $docs = $docs->where("tanggalPembuatan", ">=", $request->rilisDari);
+        } else if ($request->exists("rilisHingga")) {
+            $docs = $docs->where("tanggalPembuatan", "<=", $request->rilisHingga);
+        }
+
+        //jika ada filter dari tanggal rilis dokumen ubah order
+        if ($request->exists('rilisDari') || $request->exists('rilisHingga')) {
+            $docs = $docs->orderBy('tanggalPembuatan', 'asc');
+        }
+
+        $viewPort = $request->exists("content") && array_key_exists($request->content, self::$port) ? self::$port[$request->content] : self::$port['md'];
+        $response = [
+            "message" => "berhasil memfilter dokumen.",
+            "filter" => $request->only(["rilisDari", "rilisHingga", "content"]),
+            "data" => $docs->cursorPaginate($viewPort),
+        ];
+        return response()->json($response);
     }
 
     public function show($id)
