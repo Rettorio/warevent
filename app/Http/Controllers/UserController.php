@@ -61,4 +61,10 @@ class UserController extends Controller
 
         return $this->respondWithToken($authorized);
     }
+
+    public function logout()
+    {
+        $this->guard()->logout();
+        return response()->json(["message" => "User logged out."]);
+    }
 }

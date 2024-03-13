@@ -25,6 +25,7 @@
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post("register-user", 'UserController@register');
     $router->post("login", 'UserController@login');
+    $router->post("logout", 'UserController@logout');
     $router->get("me", "UserController@me");
 
     //barang

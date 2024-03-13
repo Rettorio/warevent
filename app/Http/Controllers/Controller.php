@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use Tymon\JWTAuth\JWTGuard;
 
 class Controller extends BaseController
 {
@@ -18,7 +19,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function guard()
+    public function guard(): JWTGuard
     {
         return Auth::guard();
     }
