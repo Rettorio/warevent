@@ -137,7 +137,17 @@ class DokumenController extends Controller
         return response()->json(compact('message', 'data'), $code);
     }
 
-    public function delete()
+    public function destroy($id)
     {
+        $dokumen = Dokumen::find($id);
+        $message = "Berhasil menghapus dokumen.";
+        $code = "200";
+        if (is_null($dokumen)) {
+            $message = "Dokumen tidak ditemukan.";
+            $code = 404;
+        } else {
+            $dokumen->delete();
+        }
+        return response()->json(compact('message'), $code);
     }
 }
